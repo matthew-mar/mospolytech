@@ -24,7 +24,7 @@ public:
     }
 
     bool isFull() {
-        return head == (tail + 1) % N;
+        return head == (tail + 1) % (N + 1);
     }
 
     bool isEmpty() {
@@ -36,7 +36,7 @@ public:
             cout << "queue is full" << endl;
         else {
             arr[tail] = a;
-            tail = (tail + 1) % N;
+            tail = (tail + 1) % (N + 1);
         }
     }
 
@@ -47,7 +47,7 @@ public:
         }
 
         int out = arr[head];
-        head = (head + 1) % N;
+        head = (head + 1) % (N + 1);
         return out;
     }
 };

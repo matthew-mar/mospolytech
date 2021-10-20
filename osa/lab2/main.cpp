@@ -9,7 +9,7 @@ const int SIZE = 3;
 
 
 struct student {
-    bool isEmpty;
+    bool isEmpty = true;
     string fio;
     string faculty;
     int groupNumber;
@@ -145,70 +145,49 @@ void search(student* s, int numberField, string textField) {
 
 
 void minimumElement(student* s, int field) {
-    switch (field) {
-        case 1: {
-            int minimumLength = pow(2, 20);
-            string min;
-            
-            for (int i = 0; i < SIZE; i++) {
-                if (!s[i].isEmpty) {
-                    if (s[i].fio.length() / 2 < minimumLength) {
-                        minimumLength = s[i].fio.length() / 2;
+    int minimum = pow(2, 20);
+    string min;
+
+    for (int i = 0; i < SIZE; i++) {
+        if (!s[i].isEmpty) {
+            switch (field) {
+                case 1: {
+                    if (s[i].fio.length() / 2 < minimum) {
+                        minimum = s[i].fio.length() / 2;
                         min = s[i].fio;
                     }
+                    break;
                 }
-            }
 
-            cout << min << endl;
-            break;
-        }
-        
-        case 2: {
-            int minimumLength = pow(2, 20);
-            string min;
-
-            for (int i = 0; i < SIZE; i++) {
-                if (!s[i].isEmpty) {
-                    if (s[i].faculty.length() / 2 < minimumLength) {
-                        minimumLength = s[i].faculty.length() / 2;
+                case 2: {
+                    if (s[i].faculty.length() / 2 < minimum) {
+                        minimum = s[i].faculty.length() / 2;
                         min = s[i].faculty;
                     }
+                    break;
                 }
-            }
 
-            cout << min << endl;
-            break;
-        } 
-        
-        case 3: {
-            int minimum = pow(2, 20);
-
-            for (int i = 0; i < SIZE; i++) {
-                if (!s[i].isEmpty) {
+                case 3: {
                     if (s[i].groupNumber < minimum) {
                         minimum = s[i].groupNumber;
                     }
+                    break;
                 }
-            }
 
-            cout << minimum << endl;
-            break;
-        }
-        
-        case 4: {
-            int minimum = pow(2, 20);
-
-            for (int i = 0; i < SIZE; i++) {
-                if (!s[i].isEmpty) {
+                case 4: {
                     if (s[i].bookNumber < minimum) {
                         minimum = s[i].bookNumber;
                     }
+                    break;
                 }
             }
-
-            cout << minimum << endl;
-            break;
         }
+    }
+
+    if (min.length() != 0) {
+        cout << min << endl;
+    } else {
+        cout << minimum << endl;
     }
 }
 
@@ -309,16 +288,18 @@ void descendingSort(student* s, int field) {
 
 void read(student* s) {
     ifstream db;
+    char end;
+    int i = 0;
     db.open("db.txt");
 
-    while (!db.eof()) {
-        for (int i = 0; i < SIZE; i++) {
-            getline(db, s[i].fio);
-            getline(db, s[i].faculty);
-            db >> s[i].groupNumber;
-            db >> s[i].bookNumber;
-            s[i].isEmpty = false;
-        }
+    while (!db.eof() && i < 3) {
+        getline(db, s[i].fio);
+        getline(db, s[i].faculty);
+        db >> s[i].groupNumber;
+        db >> s[i].bookNumber;
+        db >> s[i].isEmpty;
+        db >> end;
+        i++;
     }
 
     db.close();
@@ -335,6 +316,7 @@ void write(student* s) {
             db << s[i].faculty << "\n";
             db << s[i].groupNumber << "\n";
             db << s[i].bookNumber << "\n";
+            db << s[i].isEmpty << "\n";
         }
     }
 
@@ -344,8 +326,105 @@ void write(student* s) {
 
 int main() {
     student students[SIZE];
+    int function;
 
-    // code
+    std::cout << "Выберите функцию: " << endl;
+    std::cout << "1. Очистить элемент массива" << endl;
+    std::cout << "2. Найти пустой элемент массива" << endl;
+    std::cout << "3. Вписать данные в элемент массива" << endl;
+    std::cout << "4. Вывести данные из элемента массива" << endl;
+    std::cout << "5. Вывести данные из массива" << endl;
+    std::cout << "6. Поиск максимально близкого по значению поля" << endl;
+    std::cout << "7. Минимальный элемент" << endl;
+    std::cout << "8. Сортировка по возрастанию" << endl;
+    std::cout << "9. Сортировка по убыванию" << endl;
+    std::cout << "10. Запись данных в файл" << endl;
+    std::cout << "11. Чтение из файла" << endl;
+
+    while (true) {
+        cin >> function;
+        switch (function) {
+            case 1: {
+                int ind;
+                std::cout << "Введите индекс: "; cin >> ind;
+                clear(students, ind);
+                break;
+            }
+
+            case 2: {
+                std::cout << findEmpty(students) << endl;
+                break;
+            }
+
+            case 3: {
+                int ind;
+                std::cout << "Введите индекс: "; cin >> ind;
+                dataInput(students, ind);
+                break;
+            }
+
+            case 4: {
+                int ind;
+                std::cout << "Введите индекс: "; cin >> ind;
+                dataOutput(students, ind);
+                break;
+            }
+
+            case 5: {
+                output(students);
+                break;
+            }
+
+            case 6: {
+                int num;
+                string str;
+
+                std::cout << "Введите число: "; cin >> num;
+                std::cout << "Введите строку: "; cin >> str;
+
+                search(students, num, str);
+                break;
+            }
+
+            case 7: {
+                int num;
+                std::cout << "Введите номер поля: "; cin >> num;
+                minimumElement(students, num);
+                break;
+            }
+
+            case 8: {
+                int num;
+                std::cout << "Введите номер поля: "; cin >> num;
+                assendingSort(students, num);
+                output(students);
+                break;
+            }
+
+            case 9: {
+                int num;
+                std::cout << "Введите номер поля: "; cin >> num;
+                descendingSort(students, num);
+                output(students);
+                break;
+            }
+
+            case 10: {
+                write(students);
+                break;
+            }
+
+            case 11: {
+                read(students);
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
+
+    std::cout << "\n";
 
     return 0;
 }
