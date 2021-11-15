@@ -200,11 +200,11 @@ public:
             Node * new_node = new Node(s);
             Node * found_next = found_element->next_node;
 
-            found_element->next_node = new_node;
-            new_node->previous_node = found_element;
-
             new_node->next_node = found_next;
             found_next->previous_node = new_node;
+
+            found_element->next_node = new_node;
+            new_node->previous_node = found_element;
         }
     }
 
@@ -277,59 +277,75 @@ public:
 
 
 int main() {
-    student Student1;
-    Student1.fio = "mmary";
-    Student1.faculty = "ipit";
-    Student1.group_number = 724;
-    Student1.book_number = 8;
-
-    student Student2;
-    Student2.fio = "petrov";
-    Student2.faculty = "isit";
-    Student2.group_number = 722;
-    Student2.book_number = 10;
-
-    student Student3;
-    Student3.fio = "kirillov";
-    Student3.faculty = "fit";
-    Student3.group_number = 233;
-    Student3.book_number = 6;
-
-    student Student4;
-    Student4.fio = "egorov";
-    Student4.faculty = "vmk";
-    Student4.group_number = 111;
-    Student4.book_number = 7;
-
-    student Student5;
-    Student5.fio = "ivanov";
-    Student5.faculty = "mgu";
-    Student5.group_number = 222;
-    Student5.book_number = 9;
-
     List list;
 
-    list.append(Student1);
+    int ans;
 
-    list.append(Student2);
+    while (true) {
+        cout << endl;
+        cout << "Choode function" << endl;
+        cout << "1: add student to end" << endl;
+        cout << "2: add student to start" << endl;
+        cout << "3: search element" << endl;
+        cout << "4: add student after search element" << endl;
+        cout << "5: delete search element" << endl;
+        cout << "6: display list" << endl;
+        cout << "7: display reverse" << endl;
 
-    list.append(Student3);
+        cin >> ans;
 
-    list.append(Student4);
+        switch (ans) {
+            case 1: {
+                student s;
+                cout << "fio: "; cin >> s.fio;
+                cout << "faculty: "; cin >> s.faculty;
+                cout << "group number: "; cin >> s.group_number;
+                cout << "book_number: "; cin >> s.book_number;
+                list.append(s);
+                break;
+            }
 
-    list.append(Student5);
+            case 2: {
+                student s;
+                cout << "fio: "; cin >> s.fio;
+                cout << "faculty: "; cin >> s.faculty;
+                cout << "group number: "; cin >> s.group_number;
+                cout << "book_number: "; cin >> s.book_number;
+                list.insert(s);
+                break;
+            }
 
-    list.display();
+            case 3: {
+                list.search();
+                break;
+            }
 
-    list.search_del();
+            case 4: {
+                student s;
+                cout << "fio: "; cin >> s.fio;
+                cout << "faculty: "; cin >> s.faculty;
+                cout << "group number: "; cin >> s.group_number;
+                cout << "book_number: "; cin >> s.book_number;
+                list.search_add(s);
+                break;
+            }
 
-    list.display();
+            case 5: {
+                list.search_del();
+                break;
+            }
 
-    cout << endl;
+            case 6: {
+                list.display();
+                break;
+            }
 
-    list.display_reverse();
-
-    cout << "successful" << endl;
+            case 7: {
+                list.display_reverse();
+                break;
+            }
+        }
+    }
 
     return 0;
 }
