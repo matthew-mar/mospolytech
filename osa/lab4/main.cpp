@@ -29,6 +29,33 @@ private:
         }
     };
 
+    
+    Node* get_most_left(Node* node) {
+        Node* current_node = node;
+        while (current_node->left != NULL) {
+            current_node = current_node->left;
+        }
+        return current_node;
+    }
+
+    Node* get_previous_node(Node* need_node) {
+        Node* current_node = root;  // начало поиска
+
+        if (current_node->left == NULL && current_node->right == NULL) {
+            return current_node;
+        }
+
+        while (current_node->left != need_node && current_node->right != need_node) {
+            if (need_node->data < current_node->data) {
+                current_node = current_node->left;
+            } else if (need_node->data > current_node->data) {
+                current_node = current_node->right;
+            }
+        }
+
+        return current_node;
+    }
+
 public:
     Node* root;  // указатель на корень дерева
 
@@ -50,7 +77,7 @@ public:
         }
     }
 
-    int search(int s) {
+    Node* search(int s) {
         /* 
             * Поиск в дереве
             * Возвращает 1, если элемент найден.
@@ -61,7 +88,8 @@ public:
 
         while (current_node != NULL) {  // пока узел не пустой
             if (current_node->data == s) {  // если значение в узле равно поисковому значению
-                return 1;  // значение найдено
+                cout << 1 << endl;
+                return current_node;  // значение найдено
             } else if (s < current_node->data) {  // если поисковое значение меньше значения в узле
                 current_node = current_node->left;  // спускаемся в левый узел
             } else {  // иначе поисковое значение больше значения в узле
@@ -69,7 +97,8 @@ public:
             }
         }
 
-        return 0;  // значение не найдено
+        cout << 0 << endl;
+        return NULL;  // значение не найдено
     }
 
     Node* add_node(int d, Node** node) {
@@ -86,6 +115,139 @@ public:
         }
 
         return *node;
+    }
+
+    void delete_node(int s) {
+        Node* search_node = search(s);  // узел, который нужно удалить
+        
+        if (search_node == root) {  // если нужный узел - корневой узел
+            // если узел является листом
+            if (root->left == NULL && root->right == NULL) {
+                clear();
+            }
+
+            // если узел хранит одно поддерево
+            if (root->left != NULL && root->right == NULL) {  // если поддерево слева
+                root = root->left;
+            } else if (root->right != NULL && root->left == NULL) {  // если поддерево справа
+                root = root->right;
+            }
+
+            // если узел хранит два поддерева
+            if (root->left != NULL && root->right != NULL) {
+                Node* most_left = get_most_left(root->right);
+                Node* pre_most_left = get_previous_node(most_left);
+
+                if (most_left->right == NULL) {
+                    if (most_left == root->right) {
+                        most_left->left = root->left;
+                    } else {
+                        most_left->left = root->left;
+                        most_left->right = root->right;
+                    }
+                    pre_most_left->left = NULL;
+                    root = most_left;
+                } else {
+                    if (most_left == root->right) {
+                        most_left->left = root->left;
+                    } else {
+                        pre_most_left->left = most_left->right;
+                        most_left->left = root->left;
+                        most_left->right = root->right;
+                    }
+                    root = most_left;
+                }
+            }
+        } else {
+            Node* previous_node = get_previous_node(search_node);  // узел, предыдущий от поискового
+
+            if (previous_node->left == search_node) {  // если нужный узел слева
+                // если узел является листом
+                if (search_node->left == NULL && search_node->right == NULL) {
+                    previous_node->left = NULL;
+                    return;
+                }
+
+                // если узел хранит одно поддерево
+                if (search_node->left != NULL && search_node->right == NULL) {  // если поддерево слева
+                    previous_node->left = search_node->left;
+                    return;
+                } else if (search_node->right != NULL && search_node->left == NULL) {  // если поддерево справа
+                    previous_node->left = search_node->right;
+                    return;
+                }
+
+                // если узел хранит два поддерева
+                if (search_node->left != NULL && search_node->right != NULL) {
+                    Node* most_left = get_most_left(search_node->right);  // берем самый левый элемент от нужного элемента
+                    Node* pre_most_left = get_previous_node(most_left);  // узел перед самым левым
+
+                    if (most_left->right == NULL) {  // если самый левый узел не хранит поддеревьев
+                        previous_node->left = most_left;
+                        if (most_left == search_node->right) {
+                            most_left->left = search_node->left;
+                        } else {
+                            most_left->left = search_node->left;
+                            most_left->right = search_node->right;
+                        }
+                        pre_most_left->left = NULL;
+                    } else {
+                        if (most_left == search_node->right) {
+                            previous_node->left = most_left;
+                            most_left->left = search_node->left;
+                        } else {
+                            pre_most_left->left = most_left->right;
+                            previous_node->left = most_left;
+                            most_left->left = search_node->left;
+                            most_left->right = search_node->right;
+                        }
+                    }
+                }
+            }
+
+            if (previous_node->right == search_node) {  // если нужный узел справа
+                // если узел является листом
+                if (search_node->left == NULL && search_node->right == NULL) {
+                    previous_node->right = NULL;
+                    return;
+                }
+
+                // если узел хранит одно поддерево
+                if (search_node->left != NULL && search_node->right == NULL) {  // если поддерево слева
+                    previous_node->right = search_node->left;
+                    return;
+                } else if (search_node->right != NULL && search_node->left == NULL) {  // если поддерево справа
+                    previous_node->right = search_node->right;
+                    return;
+                }
+
+                // если узел хранит два поддерева
+                if (search_node->left != NULL && search_node->right != NULL) {
+                    Node* most_left = get_most_left(search_node->right);  // берем самый левый элемент от нужного элемента
+                    Node* pre_most_left = get_previous_node(most_left);  // узел перед самым левым
+
+                    if (most_left->right == NULL) {  // если самый левый узел не хранит поддеревьев
+                        previous_node->right = most_left;
+                        if (most_left == search_node->right) {
+                            most_left->left = search_node->left;
+                        } else {
+                            most_left->left = search_node->left;
+                            most_left->right = search_node->right;
+                        }
+                        pre_most_left->left = NULL;
+                    } else {
+                        if (most_left == search_node->right) {
+                            previous_node->right = most_left;
+                            most_left->left = search_node->left;
+                        } else {
+                            pre_most_left->left = most_left->right;
+                            most_left->left = search_node->left;
+                            most_left->right = search_node->right;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     void write(Node* node) {
@@ -147,7 +309,8 @@ int main() {
     cout << "search in tree: 2" << endl;
     cout << "write data to file: 3" << endl;
     cout << "read data from file: 4" << endl;
-    cout << "clear tree: 5" << endl;
+    cout << "delete node: 5" << endl;
+    cout << "clear tree: 6" << endl;
 
     while (true) {
         cout << endl;
@@ -179,8 +342,10 @@ int main() {
             }
 
             case 5: {
-                t.clear();
-                cout << "tree cleaned" << endl;
+                int s;
+                cout << "enter a number: "; cin >> s;
+                t.delete_node(s);
+                cout << "node deleted" << endl;
                 break;
             }
         }
