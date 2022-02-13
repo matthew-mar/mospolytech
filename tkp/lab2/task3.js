@@ -5,12 +5,13 @@ let width = 5; // ширина прямоугольника
 
 let rectangle = "";
 for (let i = 0; i < width; i++) {
-    if (i == 0 || i == width - 1) {
+    if (i == 0 || i == width - 1) {  // первая последняя строчка
         for (let j = 0; j < length; j++) {
-            rectangle += "*";
+            rectangle += "*";  // вся строчка заполняется звездами
         }
         rectangle += "<br>";
-    } else {
+    } else {  // другие строчки
+        // внутри строчки пробелы, по бокам звезды
         rectangle += "*";
         for (let k = 0; k < length-2; k++) {
             rectangle += " ";
@@ -18,15 +19,16 @@ for (let i = 0; i < width; i++) {
         rectangle += "*<br>";
     }
 }
-document.write("<pre>" + rectangle);
+document.write("<pre>" + rectangle);  // вывод прямоугольника
 
-let triangleRect = "";
+let triangleRect = "";  // прямоугольный треугольник
 for (let i = 0; i < 7; i++) {
+    // на каждой строчке звезд становится на 1 больше
     triangleRect += "*".repeat(i) + "<br>";
 }
-document.write("<pre>" + triangleRect);
+document.write("<pre>" + triangleRect);  // вывод
 
-let triangle = "";
+let triangle = "";  // треугольник
 let a = 4;
 let c = 7;
 let b = 1;
@@ -43,6 +45,7 @@ for (let i = 0; i < a; i++) {
 }
 document.write("<pre>" + triangle);
 
+// добавление к треугольнику отображенный вниз треугольник
 a = 4;
 c = 7;
 for (let i = 0; i < a; i++) {
