@@ -1,8 +1,10 @@
 let a = 10;
 let b = 3;
 
-document.write(`<div>a + b = ${a + b}<br></div>`);  // сложение
-document.write(`<div>a - b = ${a - b}<br></div>`);  // вычитание
-document.write(`<div>a * b = ${a * b}<br></div>`);  // умножение
-document.write(`<div>a / b = ${a / b}<br></div>`);  // деление
-document.write(`<div>a % b = ${a % b}<br></div>`);  // деление с остатком
+document.write("<h2>Task 1</h2>");
+document.write(`a + b = ${a + b}<br>`);  // сложение
+document.write(`a - b = ${a - b}<br>`);  // вычитание
+document.write(`a * b = ${a * b}<br>`);  // умножение
+document.write(`a / b = ${a / b}<br>`);  // деление
+document.write(`a % b = ${a % b}<br>`);  // деление с остатком
+document.write("<hr>");
