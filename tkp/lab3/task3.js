@@ -1,11 +1,13 @@
-const size = 5;  // размер массива
-let stack = Array(size).fill(0);  // массив для хранения элементов стека
+document.write("<h2>Task 3</h2>");
+
+const size1 = 5;  // размер массива
+let stack = Array(size1).fill(0);  // массив для хранения элементов стека
 let tp = -1;  // указатель на текущий элемент массива
 
 while (true) {
-    let ins = parseInt(prompt("Вставить - 1\nЗабрать - 0"));
-    if (ins) {
-        if (tp != size - 1) {  // если стек не заполнен
+    let ins1 = parseInt(prompt("Вставить - 1\nЗабрать - 0"));
+    if (ins1) {
+        if (tp != size1 - 1) {  // если стек не заполнен
             let n = parseInt(prompt("Введите число: "));  // принимаем число
             stack[++tp] = n;  // передвигаем указатель на следующий элемент, кладем число в стек
         } else {
@@ -20,3 +22,5 @@ while (true) {
         }
     }
 }
+
+document.write("<hr>");
