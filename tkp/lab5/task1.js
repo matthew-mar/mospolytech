@@ -3,10 +3,9 @@ const size = 5;
 
 
 class Stack {
-
     constructor() {
-        this.stack = Array(size).fill(0);
-        this.top = -1;
+        this.stack = Array(size).fill(0);  // массив для хранения элементов стека
+        this.top = -1;  // указатель на вершину стека
     }
 
     isEmpty() {  // контроль на отсутствие элементов

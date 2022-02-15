@@ -2,22 +2,21 @@ const size = 5;
 
 
 class Queue {
-
     constructor() {
-        this.head = 0;
-        this.tail = 0;
-        this.queue = Array(size).fill(0);
+        this.queue = Array(size).fill(0);  // массив для хранения элементов очереди
+        this.head = 0;  // указатель на первый элемент
+        this.tail = 0;  // указатель на последний элемент
     }
 
-    isFull() {
+    isFull() {  // проверка на переполнения
         return this.head == (this.tail + 1) % (this.size + 1);
     }
 
-    isEmpty() {
+    isEmpty() {  // контроль на отсутствие элементов
         return this.head == this.tail;
     }
 
-    add(a) {
+    add(a) {  // добавление элементов
         if (this.isFull()) {
             alert("queue if full");
         } else {
@@ -26,7 +25,7 @@ class Queue {
         }
     }
 
-    pop() {
+    pop() {  // извлечение элемента
         if (this.isEmpty()) {
             alert("queue is empty");
         } else {
