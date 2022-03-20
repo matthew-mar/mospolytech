@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Lab6Spisok</title>
+    </head>
+    <body>
+        <canvas id="can" width="2130px" height="170px" style="border:4px solid #000080;"></canvas>
+        <br> 
+        Индекс: <input type="number" id="indx" value="1" pattern="[0-9]{1,5}">
+        Значение:<input type="number" id="inp" value="0" pattern="[0-9]{1,5}">
+        <div style="display: flex;">
+            <div 
+                id="addHead"
+                style="border: 2px solid rgb(0, 0, 128);
+                    background-color: rgb(130, 130, 255); 
+                    font-size: 17px; 
+                    position:absolute;
+                    top: 213px;
+                    left: 10px;
+                    height: 23px; 
+                    width: 135px; 
+                    text-align: center; 
+                    cursor: pointer;">
+                Добавить в начало
+            </div>
+            <div 
+                id="addTail"
+                style="border: 2px solid rgb(0, 0, 128); 
+                    background-color: rgb(130, 130, 255); 
+                    font-size: 17px; 
+                    position:absolute;
+                    top: 213px;
+                    left: 155px;
+                    height: 23px; 
+                    width: 135px; 
+                    text-align: center; 
+                    cursor: pointer;">
+                Добавить в конец
+            </div>
+            <div 
+                id="delTail"
+                style="border: 2px solid rgb(0, 0, 128); 
+                    background-color: rgb(225, 100, 100); 
+                    font-size: 17px; 
+                    position:absolute;
+                    top: 244px;
+                    left: 155px;
+                    height: 23px; 
+                    width: 135px; 
+                    text-align: center; 
+                    cursor: pointer;">
+                Удалить хвост
+            </div>
+            <div 
+                id="delHead"
+                style="border: 2px solid rgb(0, 0, 128); 
+                    background-color: rgb(225, 100, 100); 
+                    font-size: 17px; 
+                    position:absolute;
+                    top: 244px;left: 10px;
+                    height: 23px; 
+                    width: 135px; 
+                    text-align: center; 
+                    cursor: pointer;">
+                Удалить начало
+            </div>
+            <div 
+                id="addIndex"
+                style="border: 2px solid rgb(0, 0, 128); 
+                    background-color: rgb(130, 130, 255); 
+                    font-size: 17px; 
+                    position:absolute;top: 213px;
+                    left: 300px;
+                    height: 23px; 
+                    width: 135px; 
+                    text-align: center; 
+                    cursor: pointer;">
+                Добавить индекс
+            </div>
+            <div 
+                id="delIndex"
+                style="border: 2px solid rgb(0, 0, 128); 
+                    background-color: rgb(225, 100, 100); 
+                    font-size: 17px; 
+                    position:absolute;
+                    top: 244px;
+                    left: 300px;
+                    height: 23px; 
+                    width: 135px; 
+                    text-align: center; 
+                    cursor: pointer;">
+                Удалить индекс
+            </div>
+            <script type="text/javascript">
+                let canvas = document.getElementById("can");
+                let context = canvas.getContext('2d');
+                var st;
+                var addHead = document.getElementById("addHead");
+                var addTail = document.getElementById("addTail");
+                var addIndex = document.getElementById("addIndex");
+                var delHead = document.getElementById("delHead");
+                var delTail = document.getElementById("delTail");
+                var delIndex = document.getElementById("delIndex");
+                
+                class Node {
+                    constructor(value) {
+                        this.value = value;
+                        this.next = null;
+                        this.previous = null;
+                    }
+                }
+                
+                class LinkedList {
+                    constructor() {
+                        this.head = null;
+                        this.tail = null;
+                        this.length = 0;
+                    }
+                    
+                    size() {
+                        return this.length;
+                    }
+                    
+                    addToHead(value) {
+                        const newNode = new Node(value);
+                        newNode.next = this.head;
+                        if (this.head) 
+                            this.head.previous = newNode;
+                        else 
+                            this.tail = newNode;
+                        this.head = newNode;
+                        this.length++;
+                    }
+                    
+                    addToTail(value) {
+                        const newNode = new Node(value);
+                        newNode.previous = this.tail;
+                        if (this.tail) 
+                            this.tail.next = newNode;
+                        else this.head = newNode;
+                        this.tail = newNode;
+                        this.length++;
+                    }
+                    
+                    removeHead() {
+                        if (!this.head) 
+                            return null;
+                        let value = this.head.value;
+                        this.head = this.head.next;
+                        if (this.head) {
+                            this.head.previous = null;
+                        } else {
+                            this.tail = null;
+                        }
+                        this.length--;
+                        return value;
+                    }
+                    
+                    removeTail() {
+                        if (!this.tail) 
+                            return null;
+                            
+                        let value = this.tail.value;
+                        this.tail = this.tail.previous;
+                        if (this.tail) {
+                            this.tail.next = null;
+                        } else {
+                            this.head = null;
+                        }
+                        this.length--;
+                        return value;
+                    }
+                    
+                    print() {
+                        const result = [];
+                        let current = this.head;
+                        while (current) {
+                            result.push(current.value);
+                            current = current.next;
+                        }
+                        return result;
+                    }
+                    
+                    draw() {
+                        var arr = this.print();
+                        context.clearRect(0, 0, can.width, can.height);
+                        for (var i = 0; i < this.size(); i++) {
+                            context.strokeRect((i) * 80, 50, 60, 60);
+                        context.strokeText(arr[i], (i) * 80 + 20, 80);
+                    }
+                }
+            }
+            
+            window.onload = function () {
+                ll = new LinkedList();
+            }
+            
+            addHead.onclick = function () {
+                ll.addToHead(prompt('Введите значение:'));
+                ll.draw();
+            }
+            
+            addTail.onclick = function () {
+                ll.addToTail(prompt('Введите значение:'));
+                ll.draw();
+            }
+            
+            addIndex.onclick = function () {
+                let ind = document.getElementById("indx").value;
+                let vl = document.getElementById("inp").value;
+                let ls = ll;
+                let arr = ls.print();
+                while (ls.removeTail());
+                arr.forEach(function (val, i) {
+                    if (i + 1 == ind) {
+                        ls.addToTail(vl);
+                        ls.addToTail(val);
+                    }
+                    else ls.addToTail(val);
+                });
+                ll = ls;
+                ls.draw();
+            }
+            
+            delTail.onclick = function () {
+                alert(`Удалено ${ll.removeTail()}`);ll.draw();
+            }
+            
+            delHead.onclick = function () {
+                alert(`Удалено ${ll.removeHead()}`);
+                ll.draw();
+            }
+            
+            delIndex.onclick = function () {
+                let ind = document.getElementById("indx").value;
+                let ls = ll;
+                let arr = ls.print();
+                while (ls.removeTail()) {
+                    arr.forEach(function (val, i) {
+                        if (i + 1 != ind)
+                            ls.addToTail(val);
+                        });
+                    ll = ls;ls.draw();
+                }
+            }
+            </script>
+        </body>
+    

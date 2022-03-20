@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lab6Stack</title></head>
+        <body>
+            <canvas id="canv" height="170px" width="1900" style="border:4px solid rgb(0,0,0);"></canvas>
+            <div style="display: flex;">
+                <div id="1"style="border: 2px solid rgb(0, 0, 128); background-color: rgb(110, 110, 255); position:absolute;top:190px;left: 880px;height: 22px; width: 70px; font-size: 18px; text-align: center; cursor: pointer;">Push</div>&nbsp
+                <div id="2"style="border: 2px solid rgb(128, 0, 0); background-color: rgb(255, 100, 100); position:absolute;top: 190px;left: 960px;height: 22px; width: 70px; font-size: 18px; text-align: center; cursor: pointer;">Pull</div></div>
+                <script>
+                    let canvas = document.getElementById("canv");
+                    let context = canvas.getContext('2d');
+                    var st;
+                    var addButton = document.getElementById("1");
+                    var deleteButton = document.getElementById("2");
+                    context.strokeStyle = "blue";context.font="18px serif";
+                    
+                    class Stack {
+                        constructor() {
+                            this.arr = {};
+                            this.size = 0;
+                        }
+                        
+                        push(data) {
+                            this.arr[++this.size] = data;
+                        }
+                        
+                        pop() {
+                            if (this.size) {
+                                let t = this.arr[this.size];
+                                delete this.arr[this.size--];
+                                return t;
+                            }
+                            else return "стек пуст";
+                        }
+                        
+                        draw() {
+                            context.clearRect(0, 0, canv.width, canv.height);
+                            for (var i = 1; i <= this.size; i++) {
+                                context.strokeRect((i) * 76, 45, 60, 60);
+                                context.strokeText(this.arr[i], (i) * 80 + 20, 80);
+                            }
+                        }
+                    };
+                    window.onload = function () {
+                        st = new Stack();
+                    }
+                    
+                    addButton.onclick = function () {
+                        st.push(prompt('Введите значение:'));
+                        st.draw();
+                    }
+                    
+                    deleteButton.onclick=function() {
+                        alert(`Удалено ${st.pop()}`);
+                        st.draw();
+                    }
+                </script>
+            </body>
+    </html>
